@@ -1,0 +1,11 @@
+{
+  "name": "clarissa",
+  "version": "0.0.1",
+  "description": "Classic cryptography algorithms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vincent Bruijn <vebruijn@gmail.com>",
+  "license": "WTFPL"
+}

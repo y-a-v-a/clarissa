@@ -1,5 +1,3 @@
-const TabulaRecta = require('./TabulaRecta');
-
 const charCodeA = 'A'.charCodeAt(0);
 
 function Vigenere(str, key, direction) {

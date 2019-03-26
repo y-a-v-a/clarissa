@@ -76,7 +76,7 @@ function test_0() {
 
 function test_11() {
   const v = clacry.createCipher('Vigenere');
-  const res = v.encrypt('CRYPTOISSHORTFORCRYPTOGRAPHY', 'ABCDABCDABCDABCDABCDABCDABCD');
+  const res = v.encrypt('CRYPTOISSHORTFORCRYPTOGRAPHY', 'ABCD');
 
   assert(res === 'CSAST PKVSI QUTGQ UCSAS TPIUA QJB', 'Error Vigenere enc 3');
 }
@@ -92,3 +92,8 @@ test_7();
 test_8();
 test_9();
 test_10();
+test_11();
+
+const v = clacry.createCipher('Vigenere');
+console.log(v.encrypt('YETANOTHERVISUALARTIST', 'YAVA'));
+

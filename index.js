@@ -9,6 +9,11 @@ const algorithms = {
 };
 
 function createCipher(algorithm = 'Caesar') {
+  const availableCiphers = getCiphers();
+  if (!availableCiphers.includes(algorithm)) {
+    throw new Error(`Unknown cipher: ${algorithm}`);
+  }
+
   return {
     encrypt: algorithms[algorithm].encrypt
   };

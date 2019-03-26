@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+const clarissa = require('./index');
+const arguments = process.argv;
+
+if (arguments.length <= 3) {
+  console.log(`Too few arguments.
+
+Please use this way:
+$ clarissa <cipher> <plaintext>
+`);
+
+  process.exit(1);
+}
+
+const cipher = arguments[2];
+const plaintext = arguments[3];
+
+console.log(plaintext);
+
+try {
+
+  const cipherInstance = clarissa.createCipher(cipher);
+  const result = cipherInstance.encrypt(plaintext);
+
+  console.log(result);
+} catch (exception) {
+  console.log(exception.message);
+}

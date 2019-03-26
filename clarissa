@@ -3,11 +3,24 @@
 const clarissa = require('./index');
 const arguments = process.argv;
 
-if (arguments.length <= 3) {
+if (arguments.length === 3 && arguments[2] === 'list') {
+  const allCiphers = clarissa.getCiphers();
+  console.log(`Available ciphers:
+
+${allCiphers.join('\n')}
+`);
+  process.exit();
+}
+
+if (arguments.length <= 3 || arguments[2] && arguments[2] === '--help') {
   console.log(`Too few arguments.
 
 Please use this way:
-$ clarissa <cipher> <plaintext>
+$ clarissa <cipher> <plaintext>     Encrypt <plaintext> with given <cipher>
+$ clarissa list                     List available ciphers
+
+Example:
+$ clarissa Caesar "this is caesar ciphered"
 `);
 
   process.exit(1);
@@ -16,10 +29,7 @@ $ clarissa <cipher> <plaintext>
 const cipher = arguments[2];
 const plaintext = arguments[3];
 
-console.log(plaintext);
-
 try {
-
   const cipherInstance = clarissa.createCipher(cipher);
   const result = cipherInstance.encrypt(plaintext);
 

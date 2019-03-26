@@ -18,4 +18,4 @@ $ clarissa <cipher> <plaintext>
 
 2019 Vincent Bruijn
 
-WTFPL - additionally, attribution is welcome
+WTFPL - additionally, attribution is appreciated

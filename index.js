@@ -9,10 +9,7 @@ const algorithms = {
 };
 
 function createCipher(algorithm = 'Caesar') {
-  const availableCiphers = getCiphers();
-  if (!availableCiphers.includes(algorithm)) {
-    throw new Error(`Unknown cipher: ${algorithm}`);
-  }
+  checkCipher(algorithm);
 
   return {
     encrypt: algorithms[algorithm].encrypt
@@ -20,9 +17,18 @@ function createCipher(algorithm = 'Caesar') {
 }
 
 function createDecipher(algorithm = 'Caesar') {
+  checkCipher(algorithm);
+
   return {
     decrypt: algorithms[algorithm].decrypt
   };
+}
+
+function checkCipher(name) {
+  const availableCiphers = getCiphers();
+  if (!availableCiphers.includes(name)) {
+    throw new Error(`Unknown cipher: ${name}`);
+  }
 }
 
 function getCiphers() {

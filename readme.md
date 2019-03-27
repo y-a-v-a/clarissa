@@ -4,7 +4,7 @@ Some Classic Cryptography ciphers implemented according to algorithms found on W
 Let it be obvious that none of the implemented ciphers are considered cryptographically secure nowadays. Do not use any of these ciphers for any sensitive data.
 
 ```bash
-$ $ clarissa -e -c Vigenere -k mykey -t 'plaintext'
+$ clarissa -e -c Vigenere -k mykey -t 'plaintext'
 ```
 
 ## 📝 Wishlist

@@ -15,6 +15,19 @@ describe('Caesar cipher', () => {
       const result2 = Caesar.encrypt('attackatonce', 7);
       assert(result2 === 'HAAHJRHAVUJL', 'Error in Caesar 7 enc');
     });
+
+    it("should encrypt 'abcdefghijklmnopqrstuvwxyz' to 'NOPQRSTUVWXYZABCDEFGHIJKLM' with offset 13", () => {
+      const Caesar = clarissa.createCipher('Caesar');
+      const result = Caesar.encrypt("abcdefghijklmnopqrstuvwxyz", 13);
+      assert(result === "NOPQRSTUVWXYZABCDEFGHIJKLM", "Error in Caesar 13 enc");
+    });
+
+    it.skip("should encrypt '123abc' into '123BCD' with offset 1", () => {
+      const Caesar = clarissa.createCipher('Caesar');
+      const result = Caesar.encrypt("123abc", 1);
+
+      assert(result === "123BCD", "Error in ecrypting numbers");
+    })
   });
 
   describe("#decrypt()", () => {

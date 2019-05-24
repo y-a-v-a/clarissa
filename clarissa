@@ -1,60 +1,99 @@
 #!/usr/bin/env node
 const program = require('commander');
 const clarissa = require('./index');
-const arguments = process.argv;
 
 const allCiphers = clarissa.getCiphers();
-const cipherRegexp = new RegExp(`^(${allCiphers.join('|')})$`);
+
+/**
+ * Check given cipher against list given by clarissa
+ * @param value String
+ */
+function cipherExists(value) {
+  const cipherRegexp = new RegExp(`^(${allCiphers.join('|')})$`);
+  if (!cipherRegexp.test(value)) {
+    throw new Error(`Unknown cipher: ${value}`);
+  }
+  return value;
+}
+
+/**
+ * List available ciphers
+ * @param program Command
+ */
+function listAction(program) {
+  if (!program.list) {
+    return;
+  }
+  console.log(`Available ciphers:
+  ${allCiphers.join('\n  ')}
+`);
+  process.exit();
+}
+
+/**
+ * Additions to the help output
+ */
+function helpExtended() {
+  console.log(`
+Examples:
+  $ clarissa -e -c Vigenere -k mykey -t 'plaintext'
+  $ clarissa -d -c Caesar -t 'NCJAEZRCLASJ' -o 11
+`);
+}
 
 program.version('0.0.1')
   .usage('[options]')
   .description('CLI app for Clarissa')
-  .option('-t, --text <text>', 'Text to encrypt/decrypt', /^[a-zA-Z0-9 ]+$/)
-  .option('-c, --cipher [cipher]', 'Encrypt given string', cipherRegexp, allCiphers[0])
-  .option('-e, --encrypt', 'Encrypt given string')
-  .option('-d, --decrypt', 'Decrypt given string')
-  .option('-k, --key [key]', 'Key to be used for the Vigenere cipher')
-  .option('-o, --offset', 'Offset to be used for the Caesar cipher')
-  .option('-l, --list', 'List available ciphers')
-  .action(function(program) {
-    if (!program.list) {
-      return;
-    }
-    console.log(`Available ciphers:
+  .option('-t, --text <text>', 'text to encrypt/decrypt', /^[a-zA-Z0-9 ]+$/)
+  .option('-c, --cipher [cipher]', 'encrypt/decrypt given string', cipherExists)
+  .option('-e, --encrypt', 'encrypt given string')
+  .option('-d, --decrypt', 'decrypt given string')
+  .option('-k, --key <key>', 'key to be used for the Vigenere cipher')
+  .option('-o, --offset <offset>', 'offset to be used for the Caesar cipher', parseInt)
+  .option('-l, --list', 'list available ciphers')
+  .action(listAction)
+  .option('-v, --verbose', 'verbose output');
 
-${allCiphers.join('\n')}
-    `);
-  })
-  .option('-vv, --verbose', 'Verbose output');
-
-program.on('--help', function() {
-  console.log(`
-Examples:
-  $ clarissa -e -c Vigenere -k mykey -t 'plaintext'
-`);
-});
+program.on('--help', helpExtended);
 
 program.parse(process.argv);
 
 const cipher = program.cipher;
-const key = program.key;
+let key = program.key;
 const text = program.text;
 const decrypt = program.decrypt || false;
 const encrypt = program.encrypt || false;
+let offset = program.offset;
+const verbose = !!program.verbose;
 
 try {
-  if (typeof text === 'boolean') {
+  if (!text || typeof text === 'boolean') {
     throw new Error('No text given or invalid characters found. Please adhere to RegExp /[a-zA-Z0-9 ]+/');
+  }
+
+  if (cipher === 'Caesar') {
+    if (typeof offset !== 'number') {
+      throw new Error('Caesar cipher needs -o option');
+    }
+    key = undefined;
+  }
+
+  if (cipher === 'Vigenere') {
+    if (!key) {
+      throw new Error('Vigenere cipher needs -k option');
+    }
+    offset = undefined;
   }
 
   let cipherInstance;
   let result = '';
+
   if (encrypt) {
     cipherInstance = clarissa.createCipher(cipher);
-    result = cipherInstance.encrypt(text, key);
+    result = cipherInstance.encrypt(text, key || offset);
   } else if (decrypt) {
     cipherInstance = clarissa.createDecipher(cipher);
-    result = cipherInstance.decrypt(text, key);
+    result = cipherInstance.decrypt(text, key || offset);
   } else {
     throw new Error('Please supply either -e or -d');
   }

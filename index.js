@@ -24,13 +24,24 @@ function createDecipher(algorithm = 'Caesar') {
   };
 }
 
+/**
+ * Check for cipher exitence
+ * @param {string} name Name of the cipher
+ * @returns {boolean} True when supplied cipher is known
+ * @throws Error
+ */
 function checkCipher(name) {
   const availableCiphers = getCiphers();
   if (!availableCiphers.includes(name)) {
     throw new Error(`Unknown cipher: ${name}`);
   }
+  return true;
 }
 
+/**
+ * Return list of ciphers
+ * @returns {Array.<string>} List of available ciphers
+ */
 function getCiphers() {
   return Object.keys(algorithms);
 }

@@ -1,99 +1,97 @@
-// import createCipher from './index';
 const clarissa = require('./index');
 const assert = require('assert');
 
-function test_1() {
-  const Caesar = clarissa.createCipher('Caesar');
-  const result = Caesar.encrypt('foobar');
+describe('Caesar cipher', () => {
+  describe('#encrypt()', () => {
+    it('should encrypt "foobar" into "SBBONE"', () => {
+      const Caesar = clarissa.createCipher('Caesar');
+      const result = Caesar.encrypt('foobar');
 
-  assert(result === 'SBBONE', 'Error in Caesar 13 enc');
-}
+      assert(result === 'SBBONE', 'Error in Caesar 13 enc');
+    });
 
-function test_2() {
-  const Caesar = clarissa.createCipher('Caesar');
-  const result2 = Caesar.encrypt('attackatonce', 7);
-  assert(result2 === 'HAAHJRHAVUJL', 'Error in Caesar 7 enc');
-}
+    it("should encrypt 'attackatonce' into 'HAAHJRHAVUJL'", () => {
+      const Caesar = clarissa.createCipher('Caesar');
+      const result2 = Caesar.encrypt('attackatonce', 7);
+      assert(result2 === 'HAAHJRHAVUJL', 'Error in Caesar 7 enc');
+    });
+  });
 
-function test_3() {
-  const CaesarDecipher = clarissa.createDecipher();
-  const result3 = CaesarDecipher.decrypt('sbbone', 13);
+  describe("#decrypt()", () => {
+    it("should decrypt 'sbbone' into 'foobar'", () => {
+      const CaesarDecipher = clarissa.createDecipher();
+      const result3 = CaesarDecipher.decrypt('sbbone', 13);
 
-  assert(result3 === 'FOOBAR', 'Error in Caesar 13 dec');
-}
+      assert(result3 === 'FOOBAR', 'Error in Caesar 13 dec');
+    });
 
-function test_4() {
-  const CaesarDecipher = clarissa.createDecipher('Caesar');
-  const result = CaesarDecipher.decrypt('haahjrhavujl', 7);
+    it("should decrypt 'ATTACKATONCE' into 'haahjrhavujl'", () => {
+      const CaesarDecipher = clarissa.createDecipher('Caesar');
+      const result = CaesarDecipher.decrypt('haahjrhavujl', 7);
 
-  assert(result === 'ATTACKATONCE', 'Error in Caesar 7 dec');
-}
+      assert(result === 'ATTACKATONCE', 'Error in Caesar 7 dec');
+    });
+  });
+});
 
-function test_5() {
-  const Atbash = clarissa.createCipher('Atbash');
-  const result = Atbash.encrypt('old');
+describe('Atbash cipher', () => {
+  describe("#encrypt()", () => {
+    it("", () => {
+      const Atbash = clarissa.createCipher('Atbash');
+      const result = Atbash.encrypt('old');
 
-  assert(result === 'LOW', 'Error in Atbash enc');
-}
+      assert(result === 'LOW', 'Error in Atbash enc');
+    });
 
-function test_6() {
-  const Atbash = clarissa.createDecipher('Atbash');
-  const result = Atbash.decrypt('slow');
+    it("", () => {
 
-  assert(result === 'HOLD', 'Error Atbash dec');
-}
+      const Atbash = clarissa.createDecipher('Atbash');
+      const result = Atbash.decrypt('slow');
 
-function test_7() {
-  const tabulaRecta = require('./src/TabulaRecta');
+      assert(result === 'HOLD', 'Error Atbash dec');
+    });
+  });
+});
 
-  assert(tabulaRecta[1] === 'BCDEFGHIJKLMNOPQRSTUVWXYZA', 'Tabula Recta fail');
-}
+describe("TabulaRecta", () => {
+  describe("an entry", () => {
+    it("should return 'BCDEFGHIJKLMNOPQRSTUVWXYZA' for the second entry", () => {
+      const tabulaRecta = require('./src/TabulaRecta');
 
-function test_8() {
-  const v = clarissa.createCipher('Vigenere');
-  const res = v.encrypt('testtest', 'abcdabcd');
+      assert(tabulaRecta[1] === 'BCDEFGHIJKLMNOPQRSTUVWXYZA', 'Tabula Recta fail');
+    });
+  });
+});
 
-  assert(res === 'TFUWT FUW', 'Error Vigenere enc');
-}
+describe("Vigenere", () => {
+  describe("#encrypt()", () => {
+    it("should", () => {
+      const v = clarissa.createCipher('Vigenere');
+      const res = v.encrypt('testtest', 'abcdabcd');
 
-function test_9() {
-  const v = clarissa.createDecipher('Vigenere');
-  const res = v.decrypt('MOMIQ WWVES SWIJF VUUDV WYZCK APWHO TJGPK', 'thiswouldbeaverylargekey');
-  assert(res === 'THEQU ICKBR OWNFO XJUMP SOVER THELA ZYDOG', 'Error Vigenere dec');
-}
+      assert(res === 'TFUWT FUW', 'Error Vigenere enc');
+    });
 
-function test_10() {
-  const v = clarissa.createCipher('Vigenere');
-  const res = v.encrypt('ATTACKATDAWN', 'LEMON');
+    it("should", () => {
+      const v = clarissa.createCipher('Vigenere');
+      const res = v.encrypt('ATTACKATDAWN', 'LEMON');
 
-  assert(res === 'LXFOP VEFRN HR', 'Error Vigenere enc 2');
-}
+      assert(res === 'LXFOP VEFRN HR', 'Error Vigenere enc 2');
+    });
 
-function test_0() {
-  const ciphers = clarissa.getCiphers();
-  assert(ciphers.length === 3, 'We have 3 ciphers now');
-}
+    it("should", () => {
+      const v = clarissa.createCipher('Vigenere');
+      const res = v.encrypt('CRYPTOISSHORTFORCRYPTOGRAPHY', 'ABCD');
 
-function test_11() {
-  const v = clarissa.createCipher('Vigenere');
-  const res = v.encrypt('CRYPTOISSHORTFORCRYPTOGRAPHY', 'ABCD');
+      assert(res === 'CSAST PKVSI QUTGQ UCSAS TPIUA QJB', 'Error Vigenere enc 3');
+    });
+  });
 
-  assert(res === 'CSAST PKVSI QUTGQ UCSAS TPIUA QJB', 'Error Vigenere enc 3');
-}
-
-test_0();
-test_1();
-test_2();
-test_3();
-test_4();
-test_5();
-test_6();
-test_7();
-test_8();
-test_9();
-test_10();
-test_11();
-
-//const v = clarissa.createCipher('Vigenere');
-//console.log(v.encrypt('YETANOTHERVISUALARTIST', 'YAVA'));
-
+  describe("#decrypt()", () => {
+    it("", () => {
+      const v = clarissa.createDecipher('Vigenere');
+      const res = v.decrypt('MOMIQ WWVES SWIJF VUUDV WYZCK APWHO TJGPK', 'thiswouldbeaverylargekey');
+      assert(res === 'THEQU ICKBR OWNFO XJUMP SOVER THELA ZYDOG', 'Error Vigenere dec');
+    });
+  });
+});

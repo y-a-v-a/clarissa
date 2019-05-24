@@ -4,11 +4,15 @@
   "description": "Classic cryptography algorithms",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test.js"
+    "test": "mocha -c --diff --full-trace"
   },
   "author": "Vincent Bruijn <vebruijn@gmail.com>",
   "license": "WTFPL",
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "debug": "^4.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4"
   }
 }

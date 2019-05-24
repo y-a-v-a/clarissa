@@ -1,4 +1,4 @@
-const clarissa = require('./index');
+const clarissa = require('../index');
 const assert = require('assert');
 
 describe('Caesar cipher', () => {
@@ -56,7 +56,7 @@ describe('Atbash cipher', () => {
 describe("TabulaRecta", () => {
   describe("an entry", () => {
     it("should return 'BCDEFGHIJKLMNOPQRSTUVWXYZA' for the second entry", () => {
-      const tabulaRecta = require('./src/TabulaRecta');
+      const tabulaRecta = require('../src/TabulaRecta');
 
       assert(tabulaRecta[1] === 'BCDEFGHIJKLMNOPQRSTUVWXYZA', 'Tabula Recta fail');
     });

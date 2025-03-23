@@ -27,7 +27,8 @@ Options:
 - `-d, --decrypt`: Decrypt mode
 - `-c, --cipher <cipher>`: Cipher to use (see available ciphers below)
 - `-t, --text <text>`: Text to encrypt/decrypt
-- `-k, --key <key>`: Key for ciphers that require it
+- `-k, --key <key>`: Primary key for ciphers that require it
+- `-p, --transposition <key>`: Transposition key for ADFGX cipher
 - `-o, --offset <offset>`: Offset for ciphers like Caesar
 - `-l, --list`: List all available ciphers
 - `-v, --verbose`: Verbose output
@@ -104,12 +105,12 @@ clarissa -d -c Scytale -o 3 -t "HLODEORXLWLX"
 A WWI German cipher that combines a Polybius square with columnar transposition.
 
 ```bash
-# Encrypt "attackatdawn" with key "playfair" and transposition key "germany"
-clarissa -e -c ADFGX -k "playfair,germany" -t "attackatdawn"
+# Encrypt "attackatdawn" with Polybius key "playfair" and transposition key "germany"
+clarissa -e -c ADFGX -k playfair -p germany -t "attackatdawn"
 # Output: FGADD XAFDD XFGAD FAGAX FX
 
 # Decrypt with the same keys
-clarissa -d -c ADFGX -k "playfair,germany" -t "FGADDXAFDDXFGADFAGAXFX"
+clarissa -d -c ADFGX -k playfair -p germany -t "FGADDXAFDDXFGADFAGAXFX"
 # Output: ATTACKATDAWN
 ```
 
@@ -130,9 +131,13 @@ const vigenere = clarissa.createDecipher('Vigenere');
 const decrypted = vigenere.decrypt('LXFOPVEFRN', 'lemon');
 console.log(decrypted); // ATTACKATDAWN
 
+// Using the ADFGX cipher with two keys
+const adfgx = clarissa.createCipher('ADFGX');
+const adfgxEncrypted = adfgx.encrypt('hello', 'keyword', 'transposition');
+
 // List available ciphers
 const ciphers = clarissa.getCiphers();
-console.log(ciphers); // ['Caesar', 'Atbash', 'Vigenere', 'Playfair', 'Scytale']
+console.log(ciphers); // ['Caesar', 'Atbash', 'Vigenere', 'Playfair', 'Scytale', 'ADFGX']
 ```
 
 ## 📝 Wishlist

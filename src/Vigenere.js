@@ -1,3 +1,14 @@
+/**
+ * https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher
+ * 
+ * Implementation of the Vigenère cipher, a polyalphabetic substitution cipher
+ * using a keyword to determine letter shifts for each position.
+ * The Vigenère cipher combines multiple Caesar ciphers with different shift values
+ * determined by the key, making it more secure than simple substitution ciphers.
+ *
+ * @author Vincent Bruijn <vebruijn@gmail.com>
+ */
+
 const charCodeA = 'A'.charCodeAt(0);
 
 function Vigenere(str, key, direction) {

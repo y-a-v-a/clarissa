@@ -1,5 +1,5 @@
-const ADFGX = require('../src/ADFGX');
-const assert = require('assert');
+import * as ADFGX from '../src/ADFGX.js';
+import assert from 'node:assert';
 
 describe('ADFGX cipher', () => {
   describe('#encrypt()', () => {

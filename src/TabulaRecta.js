@@ -27,20 +27,19 @@
   'ZABCDEFGHIJKLMNOPQRSTUVWXY' ]
  */
 
-module.exports = (function() {
-  const start = 'A'.charCodeAt(0);
-  const tabulaRecta = [];
+// Generate the Tabula Recta matrix
+const start = 'A'.charCodeAt(0);
+const tabulaRecta = [];
 
-  for (let x = 0; x < 26; x += 1) {
-    const seq = [];
-    for (let y = x; y <= x + 25; y++) {
-      const charCode = (y > 25 ? y - 26 : y) + start;
+for (let x = 0; x < 26; x += 1) {
+  const seq = [];
+  for (let y = x; y <= x + 25; y++) {
+    const charCode = (y > 25 ? y - 26 : y) + start;
 
-      const char = String.fromCharCode(charCode);
-      seq.push(char);
-    }
-    tabulaRecta.push(seq.join(''));
+    const char = String.fromCharCode(charCode);
+    seq.push(char);
   }
+  tabulaRecta.push(seq.join(''));
+}
 
-  return tabulaRecta;
-}());
+export default tabulaRecta;

@@ -119,7 +119,8 @@ clarissa -d -c ADFGX -k playfair -p germany -t "FGADDXAFDDXFGADFAGAXFX"
 You can also use Clarissa as a library in your own project:
 
 ```javascript
-const clarissa = require('clarissa');
+// Using ES modules
+import * as clarissa from 'clarissa';
 
 // Encrypt with Caesar cipher
 const caesar = clarissa.createCipher('Caesar');

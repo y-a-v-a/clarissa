@@ -21,7 +21,7 @@ function decrypt(str, key = 'tabulaRecta') {
   return Vigenere(str.toUpperCase(), key.toUpperCase(), -1);
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

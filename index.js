@@ -1,9 +1,9 @@
-const Caesar = require('./src/Caesar');
-const Atbash = require('./src/Atbash');
-const Vigenere = require('./src/Vigenere');
-const Playfair = require('./src/Playfair');
-const Scytale = require('./src/Scytale');
-const ADFGX = require('./src/ADFGX');
+import * as Caesar from './src/Caesar.js';
+import * as Atbash from './src/Atbash.js';
+import * as Vigenere from './src/Vigenere.js';
+import * as Playfair from './src/Playfair.js';
+import * as Scytale from './src/Scytale.js';
+import * as ADFGX from './src/ADFGX.js';
 
 const algorithms = {
   Caesar,
@@ -31,7 +31,7 @@ function createDecipher(algorithm = 'Caesar') {
 }
 
 /**
- * Check for cipher exitence
+ * Check for cipher existence
  * @param {string} name Name of the cipher
  * @returns {boolean} True when supplied cipher is known
  * @throws Error
@@ -52,7 +52,7 @@ function getCiphers() {
   return Object.keys(algorithms);
 }
 
-module.exports = {
+export {
   createCipher,
   createDecipher,
   getCiphers

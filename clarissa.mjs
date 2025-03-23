@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const { Command } = require('commander');
-const clarissa = require('./index');
+import { Command } from 'commander';
+import * as clarissa from './index.js';
 
 const program = new Command();
 const allCiphers = clarissa.getCiphers();

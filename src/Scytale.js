@@ -89,7 +89,7 @@ function decrypt(text, diameter = 3) {
   return decrypted;
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

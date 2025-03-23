@@ -1,5 +1,5 @@
-const Playfair = require('../src/Playfair');
-const assert = require('assert');
+import * as Playfair from '../src/Playfair.js';
+import assert from 'node:assert';
 
 describe('Playfair cipher', () => {
   describe('#encrypt()', () => {

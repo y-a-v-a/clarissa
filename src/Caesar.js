@@ -31,7 +31,7 @@ function decrypt(str, n = 13) {
   return meta(str.toUpperCase(), n, -1);
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

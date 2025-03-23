@@ -1,5 +1,5 @@
-const clarissa = require('../index');
-const assert = require('assert');
+import * as clarissa from '../index.js';
+import assert from 'node:assert';
 
 describe("Vigenere", () => {
   describe("#encrypt()", () => {

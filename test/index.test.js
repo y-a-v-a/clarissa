@@ -1,5 +1,5 @@
-const assert = require('assert');
-const tabulaRecta = require('../src/TabulaRecta');
+import assert from 'node:assert';
+import tabulaRecta from '../src/TabulaRecta.js';
 
 describe("TabulaRecta", () => {
   describe("an entry", () => {

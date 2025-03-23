@@ -162,7 +162,7 @@ function decrypt(text, key = 'PLAYFAIR') {
   return decryptedDigraphs.join('');
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

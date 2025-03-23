@@ -2,9 +2,13 @@
   "name": "clarissa",
   "version": "0.0.1",
   "description": "Classic cryptography algorithms",
+  "type": "module",
   "main": "index.js",
+  "bin": {
+    "clarissa": "./clarissa.mjs"
+  },
   "scripts": {
-    "test": "mocha -c --diff --full-trace"
+    "test": "mocha --experimental-vm-modules -c --diff --full-trace"
   },
   "author": "Vincent Bruijn <vebruijn@gmail.com>",
   "license": "WTFPL",

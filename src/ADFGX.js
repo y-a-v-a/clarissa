@@ -275,7 +275,7 @@ function decrypt(text, polybiusKey = 'KEYWORD', transpositionKey = 'CIPHER') {
   }
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

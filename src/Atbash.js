@@ -26,7 +26,7 @@ function decrypt(str) {
   return encrypt(str.toUpperCase());
 }
 
-module.exports = {
+export {
   encrypt,
   decrypt
 };

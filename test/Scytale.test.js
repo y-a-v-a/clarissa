@@ -1,5 +1,5 @@
-const Scytale = require('../src/Scytale');
-const assert = require('assert');
+import * as Scytale from '../src/Scytale.js';
+import assert from 'node:assert';
 
 describe('Scytale cipher', () => {
   describe('#encrypt()', () => {

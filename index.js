@@ -1,11 +1,17 @@
 const Caesar = require('./src/Caesar');
 const Atbash = require('./src/Atbash');
 const Vigenere = require('./src/Vigenere');
+const Playfair = require('./src/Playfair');
+const Scytale = require('./src/Scytale');
+const ADFGX = require('./src/ADFGX');
 
 const algorithms = {
   Caesar,
   Atbash,
-  Vigenere
+  Vigenere,
+  Playfair,
+  Scytale,
+  ADFGX
 };
 
 function createCipher(algorithm = 'Caesar') {

@@ -8,7 +8,8 @@
     "clarissa": "./clarissa.mjs"
   },
   "scripts": {
-    "test": "mocha --experimental-vm-modules -c --diff --full-trace"
+    "test": "mocha --experimental-vm-modules -c --diff --full-trace",
+    "visuals": "node visuals/build.js"
   },
   "author": "Vincent Bruijn <vebruijn@gmail.com>",
   "license": "WTFPL",

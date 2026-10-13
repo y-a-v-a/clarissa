@@ -37,6 +37,9 @@ Options:
 ## 🧩 Available Ciphers
 
 ### Caesar Cipher
+
+<img src="visuals/caesar.svg" alt="Animated Caesar cipher wheel turning by 3 and shifting HELLO to KHOOR" width="100%">
+
 Simple substitution cipher that shifts the alphabet by a specified offset.
 
 ```bash
@@ -50,6 +53,9 @@ clarissa -d -c Caesar -o 3 -t "KHOOR"
 ```
 
 ### Atbash Cipher
+
+<img src="visuals/atbash.svg" alt="Animated Atbash mirror: nested arches pair A with Z, B with Y, turning HELLO into SVOOL" width="100%">
+
 Monoalphabetic substitution cipher that maps each letter to its reverse in the alphabet.
 
 ```bash
@@ -63,6 +69,9 @@ clarissa -d -c Atbash -t "SVOOL"
 ```
 
 ### Vigenère Cipher
+
+<img src="visuals/vigenere.svg" alt="Animated tabula recta lookup encrypting ATTACKATDAWN with the key LEMON" width="100%">
+
 Polyalphabetic substitution cipher using a keyword to determine shifts.
 
 ```bash
@@ -76,6 +85,9 @@ clarissa -d -c Vigenere -k lemon -t "LXFOPVEFRN"
 ```
 
 ### Playfair Cipher
+
+<img src="visuals/playfair.svg" alt="Animated Playfair square for the key PLAYFAIR showing the row, rectangle and column rules" width="100%">
+
 Digraph substitution cipher using a 5×5 matrix derived from a keyword.
 
 ```bash
@@ -89,6 +101,9 @@ clarissa -d -c Playfair -k playfair -t "KGYVRV"
 ```
 
 ### Scytale Cipher
+
+<img src="visuals/scytale.svg" alt="Animated scytale rod turning to reveal HELLOWORLD, then unwinding into HLODEORXLWLX" width="100%">
+
 Transposition cipher using a rod of specific diameter to reorder letters.
 
 ```bash
@@ -102,17 +117,26 @@ clarissa -d -c Scytale -o 3 -t "HLODEORXLWLX"
 ```
 
 ### ADFGX Cipher
+
+<img src="visuals/adfgx.svg" alt="Animated ADFGX: Polybius coordinates followed by a columnar transposition under GERMANY" width="100%">
+
 A WWI German cipher that combines a Polybius square with columnar transposition.
 
 ```bash
 # Encrypt "attackatdawn" with Polybius key "playfair" and transposition key "germany"
 clarissa -e -c ADFGX -k playfair -p germany -t "attackatdawn"
-# Output: FGADD XAFDD XFGAD FAGAX FX
-
-# Decrypt with the same keys
-clarissa -d -c ADFGX -k playfair -p germany -t "FGADDXAFDDXFGADFAGAXFX"
-# Output: ATTACKATDAWN
+# Output: GGAFD XGAFG FXFXX AFGGD AAFX
 ```
+
+## 🎨 Visualizations
+
+The animated pictures above are plain SVG files in [`visuals/`](visuals/), generated from the worked examples by:
+
+```bash
+npm run visuals
+```
+
+Each drawing computes its example step by step and checks the result against the real cipher before it is written, so the pictures and the code cannot drift apart. The SVGs animate with SMIL, which keeps working inside an `<img>` tag (e.g. on GitHub), where scripts are not allowed.
 
 ## 🧠 Using the API
 

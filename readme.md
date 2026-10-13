@@ -126,6 +126,10 @@ A WWI German cipher that combines a Polybius square with columnar transposition.
 # Encrypt "attackatdawn" with Polybius key "playfair" and transposition key "germany"
 clarissa -e -c ADFGX -k playfair -p germany -t "attackatdawn"
 # Output: GGAFD XGAFG FXFXX AFGGD AAFX
+
+# Decrypt with the same keys
+clarissa -d -c ADFGX -k playfair -p germany -t "GGAFDXGAFGFXFXXAFGGDAAFX"
+# Output: ATTACKATDAWN
 ```
 
 ## 🎨 Visualizations

@@ -147,40 +147,33 @@ function untranspose(text, keyword) {
     return text;
   }
 
-  const columns = [];
   const keyLength = keyword.length;
-  const colLength = Math.ceil(text.length / keyLength);
-  
-  // Create key info
-  const keyInfo = keyword.split('').map((char, idx) => ({
+  const fullRows = Math.floor(text.length / keyLength);
+  const remainder = text.length % keyLength;
+
+  // Same ordering as transpose(): uppercase, sorted alphabetically (stable for repeated letters)
+  const keyInfo = keyword.toUpperCase().split('').map((char, idx) => ({
     char,
     originalIndex: idx,
   }));
-  
-  // Sort by character for alphabetical order
   keyInfo.sort((a, b) => a.char.localeCompare(b.char));
-  
-  // Calculate column lengths (some columns might be shorter)
-  const lastColLength = text.length % keyLength || keyLength;
-  const shortColsCount = keyLength - lastColLength;
-  
-  // Read the text into columns (the way it was written during encryption)
+
+  // Columns were written row by row, so only the first `remainder` columns
+  // (in original key order) hold an extra letter. They were read off in sorted order.
+  const columns = [];
   let index = 0;
-  for (let i = 0; i < keyLength; i++) {
-    const col = [];
-    const thisColLength = i < shortColsCount ? colLength - 1 : colLength;
-    for (let j = 0; j < thisColLength; j++) {
-      col.push(text[index++]);
-    }
-    columns.push(col);
+  for (const { originalIndex } of keyInfo) {
+    const length = fullRows + (originalIndex < remainder ? 1 : 0);
+    columns[originalIndex] = text.slice(index, index + length);
+    index += length;
   }
-  
-  // Rearrange columns according to the key
+
+  // Read the columns back row by row, in original key order
   const result = [];
-  for (let i = 0; i < colLength; i++) {
-    for (let j = 0; j < keyLength; j++) {
-      if (i < columns[keyInfo[j].originalIndex].length) {
-        result.push(columns[keyInfo[j].originalIndex][i]);
+  for (let row = 0; row <= fullRows; row++) {
+    for (let col = 0; col < keyLength; col++) {
+      if (row < columns[col].length) {
+        result.push(columns[col][row]);
       }
     }
   }

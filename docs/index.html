@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clarissa · Classic Ciphers</title>
+  <meta name="description" content="Classic cryptography ciphers, animated: Caesar, Atbash, Vigenère, Playfair, Scytale and ADFGX. Try them in the browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f6eedb'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23b4412c'%3EC%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --paper: #f6eedb;
+      --paper-deep: #ece0c3;
+      --card: #fffaf0;
+      --ink: #2b2118;
+      --muted: #7d6c55;
+      --rule: #cdbb98;
+      --plain: #b4412c;
+      --key: #9a6c12;
+      --cipher: #23598a;
+      --focus: #23598a;
+      --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', 'DejaVu Serif', serif;
+      --mono: 'SF Mono', Menlo, Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1b1611;
+        --paper-deep: #251e17;
+        --card: #2a221a;
+        --ink: #efe6d2;
+        --muted: #b3a283;
+        --rule: #4a3d2e;
+        --plain: #e9846e;
+        --key: #e0b24f;
+        --cipher: #8dbbe6;
+        --focus: #8dbbe6;
+        color-scheme: dark;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 17px/1.55 var(--serif);
+    }
+    a { color: var(--cipher); }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+
+    header.top { padding-top: 56px; padding-bottom: 28px; }
+    .kicker {
+      font-size: 12px; letter-spacing: .25em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+    }
+    h1 { font-weight: 400; font-size: clamp(40px, 7vw, 64px); line-height: 1.05; margin: 0 0 12px; }
+    .lede { font-style: italic; color: var(--muted); font-size: 19px; margin: 0; max-width: 40em; }
+    .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 18px; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; background: currentColor; }
+    .legend .p::before { background: var(--plain); }
+    .legend .k::before { background: var(--key); }
+    .legend .c::before { background: var(--cipher); }
+    nav.toc { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-size: 15px; }
+
+    h2 { font-weight: 400; font-size: 28px; margin: 0 0 4px; }
+    .section-note { color: var(--muted); font-style: italic; margin: 0 0 18px; }
+
+    /* playground */
+    .playground {
+      background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+      padding: 22px; margin: 8px 0 56px;
+    }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 14px; }
+    label { display: block; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    select, input, textarea, output {
+      width: 100%; font: 17px var(--mono); color: var(--ink); background: var(--paper);
+      border: 1px solid var(--rule); border-radius: 8px; padding: 9px 11px;
+    }
+    textarea { resize: vertical; min-height: 64px; }
+    select { font-family: var(--serif); }
+    .field[hidden] { display: none; }
+    #text { color: var(--plain); }
+    .keyish input { color: var(--key); }
+    .modes { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+    .modes button { border: 0; border-radius: 0; background: transparent; }
+    .modes button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    button {
+      font: 15px var(--serif); color: var(--ink); background: var(--paper); cursor: pointer;
+      border: 1px solid var(--rule); border-radius: 8px; padding: 8px 14px;
+    }
+    button:hover { border-color: var(--muted); }
+    .result { margin-top: 6px; }
+    #output {
+      display: block; min-height: 52px; font-size: 22px; font-weight: 700; letter-spacing: .06em;
+      color: var(--cipher); word-break: break-all;
+    }
+    #output.error { color: var(--plain); font: italic 16px var(--serif); letter-spacing: 0; font-weight: 400; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+    .hint { font-size: 14px; font-style: italic; color: var(--muted); margin: 10px 0 0; }
+
+    /* gallery */
+    .cipher { margin: 0 0 64px; scroll-margin-top: 16px; }
+    .cipher img {
+      display: block; width: 100%; height: auto; border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(60, 40, 15, .12), 0 8px 24px rgba(60, 40, 15, .12);
+    }
+    .cipher .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; margin-top: 14px; }
+    .cipher p { margin: 6px 0 0; max-width: 46em; }
+    code { font-family: var(--mono); font-size: .9em; }
+
+    footer { border-top: 1px solid var(--rule); padding: 24px 0 48px; color: var(--muted); font-size: 15px; }
+  </style>
+</head>
+<body>
+  <header class="top wrap">
+    <p class="kicker">Clarissa · classic cryptography</p>
+    <h1>Six ciphers, taken apart</h1>
+    <p class="lede">From Caesar's shift to the ADFGX cipher of 1918: try them below, then watch how each one works.</p>
+    <div class="legend" aria-hidden="true"><span class="p">plaintext</span><span class="k">key</span><span class="c">ciphertext</span></div>
+    <nav class="toc" aria-label="Ciphers">
+      <a href="#playground">Playground</a>
+      <a href="#caesar">Caesar</a>
+      <a href="#atbash">Atbash</a>
+      <a href="#vigenere">Vigenère</a>
+      <a href="#playfair">Playfair</a>
+      <a href="#scytale">Scytale</a>
+      <a href="#adfgx">ADFGX</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section id="playground" aria-labelledby="playground-title">
+      <h2 id="playground-title">Playground</h2>
+      <p class="section-note">Runs the library's own code in your browser. Nothing is sent anywhere.</p>
+
+      <form class="playground" id="form" autocomplete="off">
+        <div class="row">
+          <div>
+            <label for="cipher">Cipher</label>
+            <select id="cipher"></select>
+          </div>
+          <div>
+            <label id="mode-label">Mode</label>
+            <div class="modes" role="group" aria-labelledby="mode-label">
+              <button type="button" data-mode="encrypt" aria-pressed="true">Encrypt</button>
+              <button type="button" data-mode="decrypt" aria-pressed="false">Decrypt</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field keyish" data-field="offset">
+            <label for="offset" id="offset-label">Offset</label>
+            <input id="offset" type="number" inputmode="numeric" value="3">
+          </div>
+          <div class="field keyish" data-field="key">
+            <label for="key" id="key-label">Key</label>
+            <input id="key" type="text" value="lemon" spellcheck="false">
+          </div>
+          <div class="field keyish" data-field="transposition">
+            <label for="transposition">Transposition key</label>
+            <input id="transposition" type="text" value="germany" spellcheck="false">
+          </div>
+        </div>
+
+        <div>
+          <label for="text" id="text-label">Plaintext</label>
+          <textarea id="text" spellcheck="false">attack at dawn</textarea>
+        </div>
+
+        <div class="result">
+          <label for="output" id="output-label">Ciphertext</label>
+          <output id="output" for="cipher text offset key transposition" aria-live="polite"></output>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="swap">⇅ Use as input &amp; flip mode</button>
+          <button type="button" id="copy">Copy result</button>
+        </div>
+        <p class="hint" id="hint"></p>
+      </form>
+    </section>
+
+    <section class="cipher" id="caesar">
+      <img src="img/caesar.svg" width="960" height="560" loading="lazy"
+           alt="Animated Caesar cipher wheel turning by 3 and shifting HELLO to KHOOR">
+      <div class="meta">
+        <h2>Caesar</h2>
+        <button type="button" data-try="Caesar" data-text="hello" data-offset="3">Try this example</button>
+      </div>
+      <p>Every letter moves the same number of places along the alphabet, wrapping from Z back to A. With only 25 possible keys, you can break it by trying them all.</p>
+    </section>
+
+    <section class="cipher" id="atbash">
+      <img src="img/atbash.svg" width="960" height="590" loading="lazy"
+           alt="Animated Atbash mirror: nested arches pair A with Z, B with Y, turning HELLO into SVOOL">
+      <div class="meta">
+        <h2>Atbash</h2>
+        <button type="button" data-try="Atbash" data-text="hello">Try this example</button>
+      </div>
+      <p>The alphabet folded in half: A swaps with Z, B with Y. There is no key, and encrypting twice gives you back what you started with.</p>
+    </section>
+
+    <section class="cipher" id="vigenere">
+      <img src="img/vigenere.svg" width="960" height="640" loading="lazy"
+           alt="Animated tabula recta lookup encrypting ATTACKATDAWN with the key LEMON">
+      <div class="meta">
+        <h2>Vigenère</h2>
+        <button type="button" data-try="Vigenere" data-text="attack at dawn" data-key="lemon">Try this example</button>
+      </div>
+      <p>A different Caesar shift for every letter, set by a repeating keyword. For three centuries it was called <i>le chiffre indéchiffrable</i>, until Babbage and Kasiski found the key's period.</p>
+    </section>
+
+    <section class="cipher" id="playfair">
+      <img src="img/playfair.svg" width="960" height="730" loading="lazy"
+           alt="Animated Playfair square for the key PLAYFAIR showing the row, rectangle and column rules">
+      <div class="meta">
+        <h2>Playfair</h2>
+        <button type="button" data-try="Playfair" data-text="hello" data-key="playfair">Try this example</button>
+      </div>
+      <p>Letters are encrypted in pairs on a 5 × 5 square built from the key, which hides single-letter frequencies. It saw field use from the Boer War through World War II.</p>
+    </section>
+
+    <section class="cipher" id="scytale">
+      <img src="img/scytale.svg" width="960" height="600" loading="lazy"
+           alt="Animated scytale rod turning to reveal HELLOWORLD, then unwinding into HLODEORXLWLX">
+      <div class="meta">
+        <h2>Scytale</h2>
+        <button type="button" data-try="Scytale" data-text="hello world" data-offset="3">Try this example</button>
+      </div>
+      <p>A Spartan transposition: the letters stay the same, only their order changes. The rod is the key, so a rod of the same size is all you need to read it.</p>
+    </section>
+
+    <section class="cipher" id="adfgx">
+      <img src="img/adfgx.svg" width="960" height="750" loading="lazy"
+           alt="Animated ADFGX: Polybius coordinates followed by a columnar transposition under GERMANY">
+      <div class="meta">
+        <h2>ADFGX</h2>
+        <button type="button" data-try="ADFGX" data-text="attack at dawn" data-key="playfair" data-transposition="germany">Try this example</button>
+      </div>
+      <p>Used by the German army in 1918: every letter is split into two coordinates, then the coordinates are shuffled by column. Georges Painvin broke it that same year.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>None of these ciphers is secure today: please don't use them for anything sensitive.</p>
+    <p><a href="https://github.com/y-a-v-a/clarissa">Clarissa on GitHub</a> · 2019 Vincent Bruijn · WTFPL (attribution appreciated)</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -53,5 +53,29 @@ describe('ADFGX cipher', () => {
       
       assert(decrypted.toUpperCase() === original, 'Round-trip encryption/decryption failed');
     });
+
+    it('should decrypt the readme example, where columns have unequal lengths', () => {
+      const encrypted = ADFGX.encrypt('attackatdawn', 'playfair', 'germany');
+      assert.strictEqual(encrypted, 'GGAFD XGAFG FXFXX AFGGD AAFX');
+      assert.strictEqual(ADFGX.decrypt(encrypted, 'playfair', 'germany'), 'ATTACKATDAWN');
+    });
+
+    it('should round-trip with mixed-case and repeated-letter transposition keys', () => {
+      for (const key of ['Germany', 'BALLOON', 'zebra', 'aaa']) {
+        const encrypted = ADFGX.encrypt('defendtheeastwall', 'KEYWORD', key);
+        assert.strictEqual(ADFGX.decrypt(encrypted, 'KEYWORD', key), 'DEFENDTHEEASTWALL', `key ${key}`);
+      }
+    });
+
+    it('should round-trip every message length for several key lengths', () => {
+      const alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+      for (const key of ['AB', 'CIPHER', 'GERMANY', 'TRANSPOSITION']) {
+        for (let length = 1; length <= 30; length++) {
+          const message = Array.from({ length }, (_, i) => alphabet[(i * 7) % 25]).join('');
+          const encrypted = ADFGX.encrypt(message, 'PLAYFAIR', key);
+          assert.strictEqual(ADFGX.decrypt(encrypted, 'PLAYFAIR', key), message, `key ${key}, length ${length}`);
+        }
+      }
+    });
   });
 });
